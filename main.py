@@ -17,6 +17,11 @@ def get_db():
     finally:
         db.close()
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the Learnz Development Hub's Todo API"}
+
+
 @app.post("/register", response_model=schemas.User)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.create_user(db, user)
