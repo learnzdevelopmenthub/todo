@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import models, schemas, crud, auth, database
 from database import SessionLocal, engine
+from fastapi.middleware.cors import CORSMiddleware
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -68,3 +69,12 @@ def update_todo_completion(todo_id: int, completed: bool, token: str = Depends(o
     if not updated_todo:
         raise HTTPException(status_code=404, detail="Todo not found")
     return updated_todo
+
+# Add this block after creating the FastAPI app instance
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
