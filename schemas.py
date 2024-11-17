@@ -6,6 +6,10 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+class UserLogin(UserBase):
+    username: str
+    password: str
+
 class User(UserBase):
     id: int
     class Config:

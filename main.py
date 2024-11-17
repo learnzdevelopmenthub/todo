@@ -29,8 +29,8 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 @app.post("/login")
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = crud.authenticate_user(db, form_data.username, form_data.password)
+def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
+    user = crud.authenticate_user(db, user_credentials.username, user_credentials.password)
     if not user:
         raise HTTPException(status_code=400, detail="Invalid credentials")
     access_token = auth.create_access_token(data={"sub": str(user.id)})
